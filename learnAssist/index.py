@@ -158,3 +158,65 @@ urlpatterns = [
 
 
 
+<!-- book_list.html -->
+<h1>Book List</h1>
+<ul>
+{% for book in book_list %}
+  <li>{{ book.title }} by {{ book.author }}</li>
+{% endfor %}
+</ul>
+
+
+
+
+
+
+<!-- base.html -->
+<html>
+  <head>
+    <title>{% block title %}My Site{% endblock %}</title>
+  </head>
+  <body>
+    {% block content %}{% endblock %}
+  </body>
+</html>
+
+<!-- book_list.html -->
+{% extends 'base.html' %}
+{% block title %}Book List{% endblock %}
+{% block content %}
+  <h1>Book List</h1>
+  <ul>
+    {% for book in book_list %}
+      <li>{{ book.title }} by {{ book.author }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
+
+
+
+
+
+
+
+
+<a href="{% url 'book-detail' book.id %}">{{ book.title|truncatechars:30 }}</a>
+
+
+
+
+
+
+<!-- base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My Site{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <!-- Content -->
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
