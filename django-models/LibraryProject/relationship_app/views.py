@@ -4,7 +4,8 @@ from django.views.generic import DetailView
 
 # Function-based view to list all books
 def list_books(request):
-    books = Book.objects.select_related('author').all()  # Optimize with select_related
+    # Explicitly using Book.objects.all() as required
+    books = Book.objects.all()  
     return render(request, 'relationship_app/list_books.html', {'books': books})
 
 # Class-based view to display library details
