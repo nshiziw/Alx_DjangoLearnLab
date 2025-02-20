@@ -1,14 +1,13 @@
-from django.shortcuts import render
-from .models import Library
-from models import Book
+# relationship_app/views.py
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from .models import Library, Book
 from django.views.generic.detail import DetailView
-
-
 
 # Function-based view to list all books
 def list_books(request):
-    # Explicitly using Book.objects.all() as required
-    books = Book.objects.all()  
+    books = Book.objects.all()  # Explicitly using Book.objects.all() as required
     return render(request, 'relationship_app/list_books.html', {'books': books})
 
 # Class-based view to display library details
@@ -16,13 +15,6 @@ class LibraryDetailView(DetailView):
     model = Library
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
-
-
-
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 # User registration view
 def register(request):
