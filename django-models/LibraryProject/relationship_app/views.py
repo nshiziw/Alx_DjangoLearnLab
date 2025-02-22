@@ -73,15 +73,19 @@ from django.http import HttpResponseForbidden
 
 # Function to check if the user is an admin
 def is_admin(user):
-    return user.userprofile.role == 'admin'
+    if hasattr(user, 'userprofile') and user.userprofile:
+        return user.userprofile.role == 'admin'
+    return False
 
-# Function to check if the user is a librarian
 def is_librarian(user):
-    return user.userprofile.role == 'librarian'
+    if hasattr(user, 'userprofile') and user.userprofile:
+        return user.userprofile.role == 'librarian'
+    return False
 
-# Function to check if the user is a member
 def is_member(user):
-    return user.userprofile.role == 'member'
+    if hasattr(user, 'userprofile') and user.userprofile:
+        return user.userprofile.role == 'member'
+    return False
 
 # Admin view - only accessible by admin users
 @user_passes_test(is_admin)
@@ -111,15 +115,19 @@ from .models import UserProfile
 
 # Function to check if the user is an admin
 def is_admin(user):
-    return user.userprofile.role == 'admin'
+    if hasattr(user, 'userprofile') and user.userprofile:
+        return user.userprofile.role == 'admin'
+    return False
 
-# Function to check if the user is a librarian
 def is_librarian(user):
-    return user.userprofile.role == 'librarian'
+    if hasattr(user, 'userprofile') and user.userprofile:
+        return user.userprofile.role == 'librarian'
+    return False
 
-# Function to check if the user is a member
 def is_member(user):
-    return user.userprofile.role == 'member'
+    if hasattr(user, 'userprofile') and user.userprofile:
+        return user.userprofile.role == 'member'
+    return False
 
 
 
