@@ -10,7 +10,7 @@ urlpatterns = [
     path('register/', 'relationship_app.views.register', name='register'),
 
     # Book management paths
-    path('add/', add_book, name='add_book'),  # URL for adding a book
+    path('add/', add_book, name='add_book/'),  # URL for adding a book
     path('edit/<int:book_id>/', edit_book, name='edit_book/'),  # URL for editing a specific book
     path('delete/<int:book_id>/', delete_book, name='delete_book'),  # URL for deleting a specific book
 
