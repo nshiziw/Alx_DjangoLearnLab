@@ -2,7 +2,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import Library, Book
+from django.contrib.auth.decorators import user_passes_test
+from .models import Library, Book, UserProfile
 from django.views.generic.detail import DetailView
 
 # Function-based view to list all books
@@ -45,100 +46,23 @@ def user_logout(request):
     logout(request)
     return redirect('login')
 
-
-
-
-
-from django.shortcuts import render
-from django.contrib.auth.decorators import user_passes_test
-from django.http import HttpResponseForbidden
-
-# Function to check if the user is an admin
-def is_admin(user):
-    return user.userprofile.role == 'admin'
-
-# Admin view - only accessible by admin users
-@user_passes_test(is_admin)
-def admin_view(request):
-    return render(request, 'relationship_app/admin_view.html')
-
-
-
-
-
-
-from django.shortcuts import render
-from django.contrib.auth.decorators import user_passes_test
-from django.http import HttpResponseForbidden
-
 # Function to check if the user is an admin
 def is_admin(user):
     if hasattr(user, 'userprofile') and user.userprofile:
         return user.userprofile.role == 'admin'
     return False
 
+# Function to check if the user is a librarian
 def is_librarian(user):
     if hasattr(user, 'userprofile') and user.userprofile:
         return user.userprofile.role == 'librarian'
     return False
 
+# Function to check if the user is a member
 def is_member(user):
     if hasattr(user, 'userprofile') and user.userprofile:
         return user.userprofile.role == 'member'
     return False
-
-# Admin view - only accessible by admin users
-@user_passes_test(is_admin)
-def admin_view(request):
-    return render(request, 'admin_view.html')
-
-# Librarian view - only accessible by librarian users
-@user_passes_test(is_librarian)
-def librarian_view(request):
-    return render(request, 'librarian_view.html')
-
-# Member view - only accessible by member users
-@user_passes_test(is_member)
-def member_view(request):
-    return render(request, 'member_view.html')
-
-
-
-
-
-
-
-# views.py
-from django.contrib.auth.decorators import user_passes_test
-from django.shortcuts import render
-from .models import UserProfile
-
-# Function to check if the user is an admin
-def is_admin(user):
-    if hasattr(user, 'userprofile') and user.userprofile:
-        return user.userprofile.role == 'admin'
-    return False
-
-def is_librarian(user):
-    if hasattr(user, 'userprofile') and user.userprofile:
-        return user.userprofile.role == 'librarian'
-    return False
-
-def is_member(user):
-    if hasattr(user, 'userprofile') and user.userprofile:
-        return user.userprofile.role == 'member'
-    return False
-
-
-
-
-
-
-
-
-# views.py
-from django.contrib.auth.decorators import user_passes_test
-from django.shortcuts import render
 
 # Admin view - only accessible by admin users
 @user_passes_test(is_admin)
