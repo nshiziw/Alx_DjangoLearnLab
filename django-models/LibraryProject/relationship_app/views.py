@@ -5,6 +5,7 @@ from django.shortcuts import render
 # Function to check if the user is an admin
 def is_admin(user):
     if hasattr(user, 'userprofile') and user.userprofile:
+        print(f"User role: {user.userprofile.role}")  # Debugging statement
         return user.userprofile.role == 'admin'
     return False
 

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin View</title>
+</head>
+<body>
+    <h1>Welcome to the Admin View</h1>
+    <p>You are logged in as an admin. Here you can manage system-wide settings.</p>
+    <ul>
+        <li><a href="{% url 'list_books' %}">View All Books</a></li>
+        <li><a href="{% url 'librarian_view' %}">Go to Librarian View</a></li>
+        <li><a href="{% url 'member_view' %}">Go to Member View</a></li>
+    </ul>
+</body>
+</html>
