@@ -81,15 +81,6 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = 'advanced_features_and_security.CustomUser'
-
-# Specify the custom user model
-AUTH_USER_MODEL = 'myapp.CustomUser'
-
-# Configure media files for profile photos
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
