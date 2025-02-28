@@ -204,3 +204,9 @@ CSRF_COOKIE_SECURE = True  # Ensures CSRF cookies are sent over HTTPS
 X_FRAME_OPTIONS = "DENY"  # Prevents clickjacking attacks
 SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevents MIME-sniffing
 SECURE_BROWSER_XSS_FILTER = True  # Enables browser’s XSS filter
+
+
+
+
+# When using a reverse proxy (e.g., Nginx, Gunicorn), Django needs to recognize HTTPS requests
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
