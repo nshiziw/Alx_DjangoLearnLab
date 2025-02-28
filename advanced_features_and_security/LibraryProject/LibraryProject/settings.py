@@ -131,3 +131,55 @@ AUTH_USER_MODEL = 'bookshelf.CustomUser'
 # Configure media files for profile photos
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+import os
+
+DEBUG = False  # Disable debug mode in production
+ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com']  # Set allowed hosts
+
+# Secure cookies
+CSRF_COOKIE_SECURE = True  # Only send cookies over HTTPS
+SESSION_COOKIE_SECURE = True  # Ensure session cookies are only sent over HTTPS
+
+# Prevent XSS attacks
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Clickjacking protection
+X_FRAME_OPTIONS = 'DENY'
+
+# Content Security Policy (CSP)
+CSP_DEFAULT_SRC = ("'self'",)  # Only load content from the same origin
+CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'")  # Allow inline scripts if necessary
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")  # Allow inline styles if necessary
+
+# Enable CSP using django-csp (optional)
+INSTALLED_APPS += ['csp']  # Install django-csp if used
+
+# HTTPS settings
+SECURE_SSL_REDIRECT = True  # Redirect HTTP to HTTPS
+SECURE_HSTS_SECONDS = 31536000  # Enable HSTS for one year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Logging for security-related issues
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'security.log'),
+        },
+    },
+    'loggers': {
+        'django.security': {
+            'handlers': ['file'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
+    },
+}
+MIDDLEWARE += ['bookshelf.middleware.CSPMiddleware']
