@@ -183,3 +183,24 @@ LOGGING = {
     },
 }
 MIDDLEWARE += ['bookshelf.middleware.CSPMiddleware']
+
+
+
+# SECURITY SETTINGS
+
+# Redirect all HTTP traffic to HTTPS
+SECURE_SSL_REDIRECT = True  
+
+# HTTP Strict Transport Security (HSTS)
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to subdomains
+SECURE_HSTS_PRELOAD = True  # Allow preloading of HSTS policy
+
+# Secure cookies
+SESSION_COOKIE_SECURE = True  # Ensures session cookies are sent over HTTPS
+CSRF_COOKIE_SECURE = True  # Ensures CSRF cookies are sent over HTTPS
+
+# Additional security headers
+X_FRAME_OPTIONS = "DENY"  # Prevents clickjacking attacks
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevents MIME-sniffing
+SECURE_BROWSER_XSS_FILTER = True  # Enables browser’s XSS filter
