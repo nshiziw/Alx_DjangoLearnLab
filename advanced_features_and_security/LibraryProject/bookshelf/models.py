@@ -39,3 +39,29 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(username, email, password, **extra_fields)
+
+
+
+from django.db import models
+from django.contrib.auth.models import AbstractUser
+
+class CustomUser(AbstractUser):
+    """Custom user model"""
+    pass  # Keep it unchanged if already created
+
+class Book(models.Model):
+    """Example model with custom permissions"""
+    title = models.CharField(max_length=255)
+    author = models.CharField(max_length=255)
+    published_date = models.DateField()
+
+    class Meta:
+        permissions = [
+            ("can_view", "Can view books"),
+            ("can_create", "Can add books"),
+            ("can_edit", "Can edit books"),
+            ("can_delete", "Can delete books"),
+        ]
+
+    def __str__(self):
+        return self.title

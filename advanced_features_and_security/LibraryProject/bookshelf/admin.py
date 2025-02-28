@@ -28,3 +28,39 @@ class CustomUserAdmin(UserAdmin):
     )
 
 admin.site.register(CustomUser, CustomUserAdmin)
+
+
+
+from django.contrib import admin
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
+from .models import Book
+
+# Function to create groups and assign permissions
+def setup_groups():
+    # Create groups if they don't exist
+    editors, _ = Group.objects.get_or_create(name="Editors")
+    viewers, _ = Group.objects.get_or_create(name="Viewers")
+    admins, _ = Group.objects.get_or_create(name="Admins")
+
+    # Get Book model permissions
+    content_type = ContentType.objects.get_for_model(Book)
+    permissions = {
+        "can_view": Permission.objects.get(content_type=content_type, codename="can_view"),
+        "can_create": Permission.objects.get(content_type=content_type, codename="can_create"),
+        "can_edit": Permission.objects.get(content_type=content_type, codename="can_edit"),
+        "can_delete": Permission.objects.get(content_type=content_type, codename="can_delete"),
+    }
+
+    # Assign permissions
+    viewers.permissions.set([permissions["can_view"]])
+    editors.permissions.set([permissions["can_view"], permissions["can_edit"], permissions["can_create"]])
+    admins.permissions.set(permissions.values())
+
+# Run setup on startup
+setup_groups()
+
+# Register the model
+@admin.register(Book)
+class BookAdmin(admin.ModelAdmin):
+    list_display = ("title", "author", "published_date")
