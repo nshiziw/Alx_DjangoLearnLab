@@ -9,15 +9,15 @@ class Book(models.Model):
         return f"{self.title} by {self.author} ({self.publication_year})"
 
 
-# from django.contrib.auth.models import AbstractUser
-# from django.db import models
-# from .managers import CustomUserManager
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+from .managers import CustomUserManager
 
-# class CustomUser(AbstractUser):
-#     date_of_birth = models.DateField(null=True, blank=True)
-#     profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
+class CustomUser(AbstractUser):
+    date_of_birth = models.DateField(null=True, blank=True)
+    profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
 
-#     objects = CustomUserManager()
+    objects = CustomUserManager()
 
-#     def __str__(self):
-#         return self.username
+    def __str__(self):
+        return self.username
