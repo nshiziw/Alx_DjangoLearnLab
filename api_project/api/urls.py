@@ -20,3 +20,11 @@ router.register(r'books_all', BookViewSet, basename='book_all')
 urlpatterns = [
     path('', include(router.urls)),  # Include the router URLs for CRUD operations
 ]
+
+
+from rest_framework.authtoken.views import obtain_auth_token
+
+urlpatterns = [
+    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    # other URLs...
+]
