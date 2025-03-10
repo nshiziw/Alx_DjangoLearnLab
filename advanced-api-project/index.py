@@ -90,15 +90,6 @@ class PurchaseList(generics.ListAPIView):
         """
         user = self.request.user
         return Purchase.objects.filter(purchaser=user)
-    ```
-
-
-    **filtering  against url**
-
-    This involves retricting the queryset based on some parts of the url. 
-    For instance, if your URL configuration included an entry like this: 
-
-    ```python 
     re_path('^purchases/(?P<username>.+)/$', PurchaseList.as_view()),
 
 
@@ -155,3 +146,38 @@ class UserListView(generics.ListAPIView):
     serializer_class = UserSerializer
     filter_backends = [filters.OrderingFilter]
     ordering_fields = ['username', 'email']
+
+
+
+
+
+from rest_framework.test import APIRequestFactory
+
+ Using the standard RequestFactory API to create a form POST request
+factory = APIRequestFactory()
+request = factory.post('/notes/', {'title': 'new idea'})
+
+
+
+
+
+from django.test import TestCase
+from myapp.models import Animal
+
+
+class AnimalTestCase(TestCase):
+    def setUp(self):
+        Animal.objects.create(name="lion", sound="roar")
+        Animal.objects.create(name="cat", sound="meow")
+
+    def test_animals_can_speak(self):
+        """Animals that can speak are correctly identified"""
+        lion = Animal.objects.get(name="lion")
+        cat = Animal.objects.get(name="cat")
+        self.assertEqual(lion.speak(), 'The lion says "roar"')
+        self.assertEqual(cat.speak(), 'The cat says "meow"')
+
+
+
+
+
