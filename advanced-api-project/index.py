@@ -71,3 +71,87 @@ class MyView(LoginRequiredMixin, View):
 
    def get(self, request):
        # Your view logic here
+
+
+return Users.objects.filter(role=Teachers)
+
+
+from myapp.models import Purchase
+from myapp.serializers import PurchaseSerializer
+from rest_framework import generics
+
+class PurchaseList(generics.ListAPIView):
+    serializer_class = PurchaseSerializer
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        user = self.request.user
+        return Purchase.objects.filter(purchaser=user)
+    ```
+
+
+    **filtering  against url**
+
+    This involves retricting the queryset based on some parts of the url. 
+    For instance, if your URL configuration included an entry like this: 
+
+    ```python 
+    re_path('^purchases/(?P<username>.+)/$', PurchaseList.as_view()),
+
+
+
+
+
+class PurchaseList(generics.ListAPIView):
+    serializer_class = PurchaseSerializer
+
+    def get_queryset(self):
+        """
+        This view returns a list of purchases for the user specified in the URL.
+        """
+        username = self.kwargs['username']
+        return Purchase.objects.filter(purchaser__username=username)
+    
+
+
+
+
+class PurchaseList(generics.ListAPIView):
+    serializer_class = PurchaseSerializer
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a specific user,
+        by filtering based on the `username` query parameter in the URL.
+        """
+        queryset = Purchase.objects.all()
+        username = self.request.query_params.get('username')
+        if username is not None:
+            queryset = queryset.filter(purchaser__username=username)
+        return queryset
+    
+
+
+
+
+
+from rest_framework import filters
+
+class UserListView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['username', 'email']
+
+
+
+
+
+class UserListView(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['username', 'email']
