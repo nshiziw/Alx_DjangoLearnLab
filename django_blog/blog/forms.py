@@ -45,7 +45,7 @@ from .models import Post
 
 class PostForm(forms.ModelForm):
     # Using TagWidget to allow users to add tags
-    tags = forms.CharField(widget=TagWidget, required=False)
+    tags = forms.CharField(widgets=TagWidget(), required=False)
 
     class Meta:
         model = Post
