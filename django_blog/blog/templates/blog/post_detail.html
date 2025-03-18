@@ -28,3 +28,12 @@
     <p>No comments yet.</p>
   {% endfor %}
 {% endblock %}
+
+<!-- post_detail.html -->
+<h1>{{ post.title }}</h1>
+<p>{{ post.content }}</p>
+<ul>
+    {% for tag in post.tags.all %}
+        <li><a href="{% url 'tagged_posts' tag.name %}">{{ tag.name }}</a></li>
+    {% endfor %}
+</ul>

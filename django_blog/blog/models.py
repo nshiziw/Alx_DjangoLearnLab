@@ -16,3 +16,35 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.author} on {self.post}'
+
+# models.py
+from django.db import models
+
+class Tag(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+
+# models.py
+class Post(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    tags = models.ManyToManyField(Tag, related_name='posts', blank=True)
+
+    def __str__(self):
+        return self.title
+
+
+# models.py (if using django-taggit)
+from taggit.managers import TaggableManager
+
+class Post(models.Model):
+    title = models.CharField(max_length=255)
+    content = models.TextField()
+    tags = TaggableManager()
+
+    def __str__(self):
+        return self.title
