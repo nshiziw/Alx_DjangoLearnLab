@@ -36,10 +36,13 @@ urlpatterns = [
 
 
 # urls.py
-from django.urls import path
-from . import views
-
 urlpatterns = [
     path('search/', views.search, name='search'),
     path('tags/<str:tag_name>/', views.tagged_posts, name='tagged_posts'),
+]
+from .views import PostByTagListView
+
+urlpatterns = [
+    # Other URL patterns...
+    path('tags/<slug:tag_slug>/', PostByTagListView.as_view(), name='post_by_tag'),
 ]
