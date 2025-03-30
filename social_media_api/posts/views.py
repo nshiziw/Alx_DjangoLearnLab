@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.permissions import IsAuthenticated
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
@@ -58,3 +59,18 @@ class PostViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['title', 'content']
 
+
+class FeedViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
+    def list(self, request):
+        # Get the list of users the current user is following
+        followed_users = request.user.following.all()
+        # Include the current user in the feed (optional)
+        followed_users = followed_users | request.user.followers.all()
+
+        # Get the posts from the followed users
+        posts = Post.objects.filter(author__in=followed_users).order_by('-created_at')
+
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
