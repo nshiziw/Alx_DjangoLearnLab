@@ -61,3 +61,41 @@ class FeedViewSet(viewsets.ViewSet):
 
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
+
+
+from rest_framework import viewsets, permissions, status
+from rest_framework.response import Response
+from rest_framework.decorators import action
+from .models import Post, Like
+from .serializers import PostSerializer, LikeSerializer
+from notifications.models import Notification
+from django.contrib.contenttypes.models import ContentType
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    @action(detail=True, methods=['POST'])
+    def like(self, request, pk=None):
+        post = self.get_object()
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
+        if created:
+            # Create a notification
+            Notification.objects.create(
+                recipient=post.author,
+                actor=request.user,
+                verb="liked your post",
+                target=post
+            )
+            return Response({"message": "Post liked"}, status=status.HTTP_201_CREATED)
+        return Response({"message": "Already liked"}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=['POST'])
+    def unlike(self, request, pk=None):
+        post = self.get_object()
+        like = Like.objects.filter(user=request.user, post=post)
+        if like.exists():
+            like.delete()
+            return Response({"message": "Post unliked"}, status=status.HTTP_200_OK)
+        return Response({"message": "You haven't liked this post"}, status=status.HTTP_400_BAD_REQUEST)
